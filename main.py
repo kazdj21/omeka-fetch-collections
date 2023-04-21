@@ -13,12 +13,12 @@ print("Welcome!")
 print("Please input the collections endpoint from your Omeka API.")
 print("Example: https://uogguafak.omeka.net/api/collections/")
 url = input("Input the URL here: ")
-
 print("Now generating a collections_output.csv")
 with open("collections_output.csv", "w") as file:
     file.write("id, url, public, featured, added, modified, collection_name, collection_description \n")
     while not hasReachedEnd:
-        res = requests.get(f"https://uogguafak.omeka.net/api/collections/{i}")
+        generated_url = url + str(i)
+        res = requests.get(generated_url)
         data = json.loads(res.text)
         if 'message' in data.keys():
             if data['message'] == "Invalid record. Record not found.":
@@ -30,7 +30,7 @@ with open("collections_output.csv", "w") as file:
 
             # Columns
             id = data['id']
-            url = data['url']
+            user_url = data['url']
             public = data['public']
             featured = data['featured']
             added = data['added']
@@ -49,8 +49,8 @@ with open("collections_output.csv", "w") as file:
                         # collections_description = data['element_texts'][1]['text']
                         collections_description = re.sub(f'[{re.escape(string.punctuation)}\n\r\t]', ' ', data['element_texts'][1]['text'])
 
-            print(f"{id}, {url}, {public}, {featured}, {added}, {modified}, {collections_name}, {collections_description} \n")
-            file.write(f"{id}, {url}, {public}, {featured}, {added}, {modified}, {collections_name}, {collections_description} \n")
+            print(f"{id}, {user_url}, {public}, {featured}, {added}, {modified}, {collections_name}, {collections_description} \n")
+            file.write(f"{id}, {user_url}, {public}, {featured}, {added}, {modified}, {collections_name}, {collections_description} \n")
             lastID = i
             encounteredEmptyCollection = 0
             count += 1
