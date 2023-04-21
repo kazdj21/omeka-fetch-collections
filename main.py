@@ -3,17 +3,18 @@ import json
 import re
 import string
 
-# res = requests.get("https://uogguafak.omeka.net/api/collections/30")
-# data = json.loads(res.text)
-
 hasReachedEnd = False
 encounteredEmptyCollection = 0
 i = 1
 lastID = 1
 count = 0
 
-print("Now generating a collections_output.csv")
+print("Welcome!")
+print("Please input the collections endpoint from your Omeka API.")
+print("Example: https://uogguafak.omeka.net/api/collections/")
+url = input("Input the URL here: ")
 
+print("Now generating a collections_output.csv")
 with open("collections_output.csv", "w") as file:
     file.write("id, url, public, featured, added, modified, collection_name, collection_description \n")
     while not hasReachedEnd:
